@@ -9,6 +9,6 @@ import io.cucumber.testng.CucumberOptions;
  */
 
 
-@CucumberOptions(tags = "@ui")
+@CucumberOptions(tags = "@a",plugin = {"com.backend.StepDetails"})
 public class RunCukesTestUI extends AbstractTestNGCucumberTests {
 }

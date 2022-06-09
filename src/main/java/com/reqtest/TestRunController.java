@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,6 +53,14 @@ public class TestRunController {
         Assert.assertEquals(response.getStatusCode(), 200);
     }
 
+    public void uploadAttachment(String url, Map<String, ?> headers, String testRunId, long contentId, long itemId, File file){
+        Response response = requestUtils.sendPostWithPathAndFormData(url, headers,
+                getProjectTestRunContentAndItemIdParam(testRunId, contentId, itemId), file);
+        String responseString = response.getBody().asString();
+        log.info("Response : " + responseString);
+        Assert.assertEquals(response.getStatusCode(), 200);
+    }
+
     private Map<String, ?> getProjectIdParam(){
         Map<String, String> params = new HashMap<>();
         params.put("projectId", Constants.PROJECT_ID);
@@ -61,6 +70,13 @@ public class TestRunController {
     private Map<String, ?> getProjectIdAndTestRunIdParam(String testRunId){
         Map<String, String> params = (Map<String, String>) getProjectIdParam();
         params.put("testRunId", testRunId);
+        return params;
+    }
+
+    private Map<String, ?> getProjectTestRunContentAndItemIdParam(String testRunId, long contentId, long itemId){
+        Map<String, Object> params = (Map<String, Object>) getProjectIdAndTestRunIdParam(testRunId);
+        params.put("contentId", contentId);
+        params.put("itemId", itemId);
         return params;
     }
 

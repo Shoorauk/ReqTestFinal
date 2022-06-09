@@ -3,6 +3,7 @@ package com.backend;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 
+import java.io.File;
 import java.util.Map;
 
 public class RequestUtils {
@@ -25,5 +26,9 @@ public class RequestUtils {
 
     public Response sendPostWithBody(String url, Map<String, ?> headers, Object body){
         return RestAssured.given().headers(headers).log().all().body(body).post(url);
+    }
+
+    public Response sendPostWithPathAndFormData(String url, Map<String, ?> headers, Map<String, ?> params, File file){
+        return RestAssured.given().headers(headers).log().all().pathParams(params).multiPart("file", file).post(url);
     }
 }
