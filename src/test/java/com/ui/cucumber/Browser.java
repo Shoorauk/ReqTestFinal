@@ -20,6 +20,7 @@ import io.cucumber.java.After;
 import io.cucumber.java.BeforeStep;
 import io.cucumber.java.Scenario;
 import io.cucumber.java.Status;
+import lombok.Builder;
 import org.apache.commons.lang3.RandomUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -156,12 +157,18 @@ public class Browser {
     }
 
     public Map<String, ?> getReqtestHeaders(){
+        return getReqtestHeaders("application/json");
+    }
+
+    public Map<String, ?> getReqtestHeaders(String contentType){
         Map<String, String> headers = new HashMap<>();
         headers.put("accept", "application/json");
-        headers.put("Content-Type", "application/json");
+        headers.put("Content-Type", contentType);
         headers.put("reqtest-pat", Constants.REQTEST_PAT);
         return headers;
     }
+
+
 
     public Map<String, ?> getReqresHeaders(){
         Map<String, String> headers = new HashMap<>();
@@ -216,7 +223,7 @@ public class Browser {
                 .stream().filter(findWithStepName).findFirst().get().getId();
         testRunController.uploadAttachment(
                 getApiPath(Constants.REQTEST, Constants.UPLOAD_ATTACHMENT),
-                getReqtestHeaders(),
+                getReqtestHeaders("multipart/form-data"),
                 Browser.testRunId, contentId, itemId, file);
     }
 

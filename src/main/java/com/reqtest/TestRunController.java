@@ -6,17 +6,16 @@ import com.reqtest.Entities.Response.GetContentsResponse;
 import com.backend.RequestUtils;
 import com.google.gson.Gson;
 import io.restassured.response.Response;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.testng.Assert;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 public class TestRunController {
 
-    public static final Logger log = LogManager.getLogger(TestRunController.class);
     Gson gson = new Gson();
 
     RequestUtils requestUtils = new RequestUtils();
