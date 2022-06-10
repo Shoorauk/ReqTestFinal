@@ -21,6 +21,7 @@ import io.cucumber.java.BeforeStep;
 import io.cucumber.java.Scenario;
 import io.cucumber.java.Status;
 import lombok.Builder;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -36,6 +37,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -209,7 +211,13 @@ public class Browser {
     }
 
     public void onTestFailure(Scenario scenario) {
-        File file = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+
+        try {
+            File file = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(file, new File("C:\\screenshot2.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         GetContentsResponse contentsResponse = testRunController.getTestRunContents(
                 getApiPath(Constants.REQTEST, Constants.GET_CONTENTS),
                 getReqtestHeaders(),
@@ -224,7 +232,7 @@ public class Browser {
         testRunController.uploadAttachment(
                 getApiPath(Constants.REQTEST, Constants.UPLOAD_ATTACHMENT),
                 getReqtestHeaders("multipart/form-data"),
-                Browser.testRunId, contentId, itemId, file);
+                Browser.testRunId, contentId, itemId, new File("C:\\screenshot2.png"));
     }
 
 
