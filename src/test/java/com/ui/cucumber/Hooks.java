@@ -10,6 +10,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 /**
  * Created by mac on 25/08/17.
  */
@@ -31,5 +37,20 @@ public class Hooks {
             default:
                 throw new AssertionError("Invalid request type.");
         }
+    }
+
+    public static File writeByte(byte[] bytes) {
+
+        File file = new File("src/test/Resources/com/ui/cucumber/screenshots/screenshot.png");
+        try {
+            OutputStream os = Files.newOutputStream(file.toPath());
+            os.write(bytes);
+            System.out.println("Successfully"
+                    + " byte inserted");
+            os.close();
+        } catch (Exception e) {
+            System.out.println("Exception: " + e);
+        }
+        return file;
     }
 }

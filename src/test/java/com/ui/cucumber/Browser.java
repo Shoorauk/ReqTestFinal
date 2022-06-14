@@ -211,13 +211,7 @@ public class Browser {
     }
 
     public void onTestFailure(Scenario scenario) {
-
-        try {
-            File file = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(file, new File("C:\\screenshot2.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        final byte[] file = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
         GetContentsResponse contentsResponse = testRunController.getTestRunContents(
                 getApiPath(Constants.REQTEST, Constants.GET_CONTENTS),
                 getReqtestHeaders(),
@@ -232,7 +226,7 @@ public class Browser {
         testRunController.uploadAttachment(
                 getApiPath(Constants.REQTEST, Constants.UPLOAD_ATTACHMENT),
                 getReqtestHeaders("multipart/form-data"),
-                Browser.testRunId, contentId, itemId, new File("C:\\screenshot2.png"));
+                Browser.testRunId, contentId, itemId, Hooks.writeByte(file));
     }
 
 
